@@ -21,9 +21,5 @@ COPY ./code/mlops/preprocessing.py ./preprocessing.py
 COPY ./code/mlops/train.py ./train.py
 COPY ./code/mlops/test.py ./test.py
 
-COPY /home/jovyan/processed_data/train.csv ./Data/train.csv
-COPY /home/jovyan/processed_data/test.csv ./Data/test.csv
-COPY /home/jovyan/model/Xgboost_model.joblib  ./code/mlops/model.joblib
-COPY /home/jovyan/results/train_metadata.json ./code/mlops/train_metadata.json
-COPY /home/jovyan/results/test_metadata.json ./code/mlops/test_metadata.json
+
                            
