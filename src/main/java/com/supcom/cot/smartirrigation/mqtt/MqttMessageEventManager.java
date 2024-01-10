@@ -2,6 +2,7 @@ package com.supcom.cot.smartirrigation.mqtt;
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
+import jakarta.inject.Inject;
 import org.eclipse.paho.mqttv5.client.*;
 import org.eclipse.paho.mqttv5.client.MqttConnectionOptions;
 import org.eclipse.paho.mqttv5.client.persist.MemoryPersistence;
@@ -15,11 +16,14 @@ import com.supcom.cot.smartirrigation.entities.Sensor;
 import com.supcom.cot.smartirrigation.boundaries.PublishWebsocketEndpoint;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.ConfigProvider;
+import com.supcom.cot.smartirrigation.repositories.SensorRepository;
+
 @Startup
 @Singleton // With singleton and startup annotations, you can launch a function on server startup
 public class MqttMessageEventManager {
-    public static int qos           = 1;
-    public static String topic      = "test";
+
+    public static int qos           = 0;
+    public static String topic      = "Smartirrigation";
     public static MemoryPersistence persistence = new MemoryPersistence();
     public static MqttClient client;
     private final Config config = ConfigProvider.getConfig(); // Get sensitive data such as MQTT broker password from the system variables
@@ -29,9 +33,12 @@ public class MqttMessageEventManager {
     private final String mqttusername = config.getValue("mqtt.broker.username",String.class); // Username of the MQTT broker
     private final String mqttPassword = config.getValue("mqtt.broker.password",String.class); // Password of the mqtt broker
 
+//    @Inject
+//    private SensorRepository repository;
     @PostConstruct // annotate the function to be started on launch with post construct. this function will connect on the broker.
     public void start() {
         System.out.println("Connecting to the MQTT broker...: ");
+
 
 
         MqttMessageEventManager MqttListener= new MqttMessageEventManager();
@@ -60,7 +67,7 @@ public class MqttMessageEventManager {
             MqttConnectionOptions connOpts = new MqttConnectionOptions(); // set the connection options
             connOpts.setUserName(mqttusername);
             connOpts.setPassword(mqttPassword.getBytes(StandardCharsets.UTF_8));
-            
+
             connOpts.setCleanStart(false);
 
             client = new MqttClient(broker, clientId, persistence);
@@ -82,11 +89,23 @@ public class MqttMessageEventManager {
                 public void messageArrived(String topic, MqttMessage mqttMessage) { // On message receival, construct sensor json object and publish to Websocket
                     JSONObject object = new JSONObject(new String( mqttMessage.getPayload() ));
                     String messageTxt=object.getString("id");
-                    Double value=object.isNull("value") ? null : object.getDouble("value");
-                    Sensor sensor=new Sensor(messageTxt,value);
+                    Double moisture=object.isNull("Moisture") ? null : object.getDouble("Moisture");
+                    Double temperature=object.isNull("Temperature") ? null : object.getDouble("Temperature");
+                    Double humidity=object.isNull("Humidity") ? null : object.getDouble("Humidity");
+                    Sensor sensor=new Sensor(messageTxt,moisture,temperature,humidity);
+
                     String sensorString = sensor.toString();
                     System.out.println(sensorString);
                     System.out.println("Message on " + topic + ": '" + messageTxt + "'");
+//                    try {
+//                        repository.save(sensor);
+//                        // If no exception is thrown, the save operation was successful.
+//                        System.out.println("Sensor saved successfully.");
+//                    } catch (Exception e) {
+//                        // Handle the exception - print or log the error information
+//                        System.err.println("Error saving sensor: " + e.getMessage());
+//                        e.printStackTrace(); // This prints the stack trace, providing more detailed error information.
+//                    }
 
                     PublishWebsocketEndpoint.broadcastMessage(sensor);
                     MqttProperties props = mqttMessage.getProperties();

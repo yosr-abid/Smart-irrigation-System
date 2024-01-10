@@ -26,10 +26,7 @@ public class Sensor implements Serializable  { // Sensor entity for MQTT message
     public Sensor() {
     }
 
-    public Sensor(String id, Double tempValue) {
-        this.id = id;
-        this.tempValue = tempValue;
-    }
+
 
     public Sensor(String id, Double moistureValue, Double tempValue, Double humidityValue) {
         this.id = id;
