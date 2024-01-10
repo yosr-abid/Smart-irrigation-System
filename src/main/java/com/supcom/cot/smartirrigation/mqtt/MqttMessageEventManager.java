@@ -89,14 +89,15 @@ public class MqttMessageEventManager {
                 public void messageArrived(String topic, MqttMessage mqttMessage) { // On message receival, construct sensor json object and publish to Websocket
                     JSONObject object = new JSONObject(new String( mqttMessage.getPayload() ));
                     String messageTxt=object.getString("id");
-                    Double moisture=object.isNull("Moisture") ? null : object.getDouble("Moisture");
-                    Double temperature=object.isNull("Temperature") ? null : object.getDouble("Temperature");
-                    Double humidity=object.isNull("Humidity") ? null : object.getDouble("Humidity");
+                    Double moisture=object.isNull("moistureValue") ? null : object.getDouble("moistureValue");
+                    Double temperature=object.isNull("tempValue") ? null : object.getDouble("tempValue");
+                    Double humidity=object.isNull("humidityValue") ? null : object.getDouble("humidityValue");
                     Sensor sensor=new Sensor(messageTxt,moisture,temperature,humidity);
 
                     String sensorString = sensor.toString();
                     System.out.println(sensorString);
                     System.out.println("Message on " + topic + ": '" + messageTxt + "'");
+                    PublishWebsocketEndpoint.broadcastMessage(sensor);
 //                    try {
 //                        repository.save(sensor);
 //                        // If no exception is thrown, the save operation was successful.
@@ -107,7 +108,7 @@ public class MqttMessageEventManager {
 //                        e.printStackTrace(); // This prints the stack trace, providing more detailed error information.
 //                    }
 
-                    PublishWebsocketEndpoint.broadcastMessage(sensor);
+
                     MqttProperties props = mqttMessage.getProperties();
                     String responseTopic = props.getResponseTopic();
 
