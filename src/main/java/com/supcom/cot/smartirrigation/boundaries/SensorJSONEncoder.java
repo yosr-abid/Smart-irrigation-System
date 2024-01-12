@@ -12,11 +12,9 @@ public class SensorJSONEncoder implements Encoder.Text<Sensor> {
 
         JsonObject jsonObject = Json.createObjectBuilder()
                 .add("id", sensor.getId())
-                .add("humidityValue",sensor.getHumidityValue())
-                .add("moistureValue",sensor.getMoistureValue())
-                .add("tempValue",sensor.getTempValue())
-                .add("longitude",sensor.getLongitude())
-                .add("latitude",sensor.getLatitude())
+                .add("temperature", sensor.getTemperature())
+                .add("humidity", sensor.getHumidity())
+                .add("moisture", sensor.getMoisture())
                 .build();
         return jsonObject.toString();
 

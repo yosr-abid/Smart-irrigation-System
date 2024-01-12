@@ -1,5 +1,6 @@
 package com.supcom.cot.smartirrigation.boundaries;
 
+
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import java.io.StringReader;
@@ -15,13 +16,10 @@ public class SensorJSONDecoder implements Decoder.Text<Sensor>{
         JsonObject jsonObject = Json
                 .createReader(new StringReader(jsonMessage)).readObject();
         String id=jsonObject.getString("id");
-        Double moistureValue=jsonObject.isNull("moistureValue") ? null : jsonObject.getJsonNumber("moistureValue").doubleValue();
-        Double humidityValue=jsonObject.isNull("humidityValue") ? null : jsonObject.getJsonNumber("humidityValue").doubleValue();
-        Double tempValue=jsonObject.isNull("tempValue") ? null : jsonObject.getJsonNumber("tempValue").doubleValue();
-        Double longitude=jsonObject.isNull("longitude") ? null : jsonObject.getJsonNumber("longitude").doubleValue();
-        Double latitude=jsonObject.isNull("latitude") ? null : jsonObject.getJsonNumber("latitude").doubleValue();
-
-        Sensor sensor = new Sensor(id, moistureValue, tempValue, humidityValue, longitude, latitude);
+        Double temperature=jsonObject.isNull("temperature") ? null : jsonObject.getJsonNumber("temperature").doubleValue();
+        Double humidity=jsonObject.isNull("humidity") ? null : jsonObject.getJsonNumber("humidity").doubleValue();
+        Double moisture=jsonObject.isNull("moisture") ? null : jsonObject.getJsonNumber("moisture").doubleValue();
+        Sensor sensor = new Sensor(id,temperature,humidity,moisture);
         return sensor;
 
     }

@@ -31,9 +31,16 @@ public class SensorEndpoint {
         repository.save(sensor);
     }
 
-    @OPTIONS  // Add this method to handle preflight requests
-    public Response preflight() {
-        return Response.ok().build();
-    }
+    @PUT
+    @Path("{id}")
+    public void update(@PathParam("id") String id, Sensor updatedSensor) {
+        Sensor existingSensor = repository.findById(id).orElseThrow(NOT_FOUND);
 
+        existingSensor.setId(updatedSensor.getId());
+        existingSensor.setTemperature(updatedSensor.getTemperature());
+        existingSensor.setMoisture(updatedSensor.getMoisture());
+        existingSensor.setHumidity(updatedSensor.getHumidity());
+
+        repository.save(existingSensor);
+    }
 }

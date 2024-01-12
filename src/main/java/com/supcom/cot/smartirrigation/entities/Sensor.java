@@ -1,5 +1,4 @@
 package com.supcom.cot.smartirrigation.entities;
-
 import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
@@ -14,68 +13,56 @@ public class Sensor implements Serializable  { // Sensor entity for MQTT message
     private String id; //Sensor ID
 
     @Column
-    private Double moistureValue; //Value from the moisture sensor
+    private Double temperature; // from DHT sensor
+
     @Column
-    private Double tempValue; //Value from the temperature sensor
+    private Double humidity; // from DHT sensor
+
     @Column
-    private Double humidityValue; //Value from the humidity sensor
-    @Column
-    private Double longitude; //Value of longitude
-    @Column
-    private Double latitude; //Value of latitude
+    private Double moisture; // from Moisture sensor
+
     public Sensor() {
     }
 
-
-
-    public Sensor(String id, Double moistureValue, Double tempValue, Double humidityValue) {
-        this.id = id;
-        this.moistureValue = moistureValue;
-        this.tempValue = tempValue;
-        this.humidityValue = humidityValue;
+    public Sensor(String id, Double temperature, Double humidity , Double moisture) {
+        this.id= id;
+        this.temperature = temperature;
+        this.humidity=humidity;
+        this.moisture=moisture;
 
     }
 
-    public Sensor(String id, Double moistureValue, Double tempValue, Double humidityValue, Double longitude, Double latitude) {
-        this.id = id;
-        this.moistureValue = moistureValue;
-        this.tempValue = tempValue;
-        this.humidityValue = humidityValue;
-        this.longitude = longitude;
-        this.latitude = latitude;
-    }
 
     //Getters
     public String getId() {
         return id;
     }
-
-    public Double getMoistureValue() {
-        return moistureValue;
+    public Double getTemperature() {
+        return temperature;
     }
 
-    public Double getTempValue() {
-        return tempValue;
+    public Double getHumidity() {
+        return humidity;
     }
 
-    public Double getHumidityValue() {
-        return humidityValue;
+    public Double getMoisture() {
+        return moisture;
     }
 
-    public Double getLongitude() {
-        return longitude;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public Double getLatitude() {
-        return latitude;
+    public void setTemperature(Double temperature) {
+        this.temperature = temperature;
     }
 
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
+    public void setHumidity(Double humidity) {
+        this.humidity = humidity;
     }
 
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
+    public void setMoisture(Double moisture) {
+        this.moisture = moisture;
     }
 
     @Override
@@ -99,11 +86,12 @@ public class Sensor implements Serializable  { // Sensor entity for MQTT message
     public String toString() {
         return "Sensor{" +
                 "id='" + id + '\'' +
-                ", value=" + moistureValue +
-                ", value=" + tempValue +
-                ", value=" + humidityValue +
+                ", temperature=" + temperature +
+                ", humidity=" + humidity +
+                ", moisture=" + moisture +
 
                 '}';
     }
 
 }
+

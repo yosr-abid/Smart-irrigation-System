@@ -16,7 +16,7 @@ public class PublishWebsocketEndpoint {
         for (Session session : sessions.values()) {
             try {
                 session.getBasicRemote().sendObject(sensor); // broadcast the message to websocket
-                System.out.println("work: "); // for debugging
+                System.out.println("Got it"); // for debugging
             } catch (IOException | EncodeException e) {
                 e.printStackTrace();
             }
@@ -24,6 +24,7 @@ public class PublishWebsocketEndpoint {
     }
     @OnOpen
     public void onOpen(Session session){
+        this.mqttlistener = new MqttMessageEventManager();
         mqttlistener.Hello(); // print Hello on session start, for debugging
         sessions.put(session.getId(), session); //add the new session
 
