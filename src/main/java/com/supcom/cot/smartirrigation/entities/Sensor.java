@@ -86,9 +86,17 @@ public class Sensor implements Serializable  { // Sensor entity for MQTT message
     public String toString() {
         return "Sensor{" +
                 "id='" + id + '\'' +
+<<<<<<< HEAD
                 ", temperature=" + temperature +
                 ", humidity=" + humidity +
                 ", moisture=" + moisture +
+=======
+                ", moistureValue=" + moistureValue +
+                ", tempValue=" + tempValue +
+                ", humidityValue=" + humidityValue +
+                ", long=" + longitude +
+                ", lat" + latitude +
+>>>>>>> 5e4c356cb86ac57b3c986ef3f27fc4055e4cd5b1
 
                 '}';
     }

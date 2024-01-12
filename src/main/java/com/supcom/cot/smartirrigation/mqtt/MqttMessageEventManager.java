@@ -78,6 +78,7 @@ public class MqttMessageEventManager {
                 public void messageArrived(String topic, MqttMessage mqttMessage) { // On message receival, construct sensor json object and publish to Websocket
                     JSONObject object = new JSONObject(new String( mqttMessage.getPayload() ));
                     String messageTxt=object.getString("id");
+<<<<<<< HEAD
                     Double temprature=object.isNull("temprature") ? null : object.getDouble("temprature");
                     Double humidity=object.isNull("humidity") ? null : object.getDouble("humidity");
                     Double moisture=object.isNull("moisture") ? null : object.getDouble("moisture");
@@ -85,6 +86,28 @@ public class MqttMessageEventManager {
                     System.out.println("Message on " + topic + ": '" + messageTxt + "'");
                     System.out.println(sensor);
                     PublishWebsocketEndpoint.broadcastMessage(sensor);
+=======
+                    Double moisture=object.isNull("moistureValue") ? null : object.getDouble("moistureValue");
+                    Double temperature=object.isNull("tempValue") ? null : object.getDouble("tempValue");
+                    Double humidity=object.isNull("humidityValue") ? null : object.getDouble("humidityValue");
+                    Sensor sensor=new Sensor(messageTxt,moisture,temperature,humidity);
+
+                    String sensorString = sensor.toString();
+                    System.out.println(sensorString);
+                    System.out.println("Message on " + topic + ": '" + messageTxt + "'");
+                    PublishWebsocketEndpoint.broadcastMessage(sensor);
+//                    try {
+//                        repository.save(sensor);
+//                        // If no exception is thrown, the save operation was successful.
+//                        System.out.println("Sensor saved successfully.");
+//                    } catch (Exception e) {
+//                        // Handle the exception - print or log the error information
+//                        System.err.println("Error saving sensor: " + e.getMessage());
+//                        e.printStackTrace(); // This prints the stack trace, providing more detailed error information.
+//                    }
+
+
+>>>>>>> 5e4c356cb86ac57b3c986ef3f27fc4055e4cd5b1
                     MqttProperties props = mqttMessage.getProperties();
                     String responseTopic = props.getResponseTopic();
 

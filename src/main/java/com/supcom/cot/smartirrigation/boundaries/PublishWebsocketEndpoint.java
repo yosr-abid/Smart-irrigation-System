@@ -16,7 +16,12 @@ public class PublishWebsocketEndpoint {
         for (Session session : sessions.values()) {
             try {
                 session.getBasicRemote().sendObject(sensor); // broadcast the message to websocket
+<<<<<<< HEAD
                 System.out.println("Got it"); // for debugging
+=======
+                System.out.println("work: ");// for debugging
+                System.out.println("val: "+sessions.values());
+>>>>>>> 5e4c356cb86ac57b3c986ef3f27fc4055e4cd5b1
             } catch (IOException | EncodeException e) {
                 e.printStackTrace();
             }
@@ -26,7 +31,10 @@ public class PublishWebsocketEndpoint {
     public void onOpen(Session session){
         this.mqttlistener = new MqttMessageEventManager();
         mqttlistener.Hello(); // print Hello on session start, for debugging
+        System.out.println("websocket: "+ session);
+
         sessions.put(session.getId(), session); //add the new session
+        System.out.println("websocket: "+ session.getId());
 
     }
     @OnClose
